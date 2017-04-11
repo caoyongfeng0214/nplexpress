@@ -1,0 +1,52 @@
+NPL bin dir: E:\ParaCraftSDK-master\NPLRuntime\win\bin\
+ParaEngine.sig file not found
+WorkingDir: E:\nplexpress\nplexpress
+OS information:
+OS version:Microsoft  (build 9200), 64-bit
+Number of processors:8
+Processor type:586
+TotalPhysicalMemory:16687908
+FreePhysicalMemory:12886444
+
+ParaEngine Root Dir is E:/nplexpress/nplexpress/
+search path: E:/ParaCraftSDK-master/npl_packages/main/
+./packages dir: E:\ParaCraftSDK-master\NPLRuntime\win\packages\
+Archive: E:\ParaCraftSDK-master\NPLRuntime\win\packages\main_mobile_res.pkg is opened and read 570 entries
+Archive: E:\ParaCraftSDK-master\NPLRuntime\win\packages\main150727.pkg is opened and read 2645 entries
+Archive: E:\ParaCraftSDK-master\NPLRuntime\win\packages\main.pkg is opened and read 7536 entries
+main loop: bin/www.npl 
+CAssetManifest loaded 0 files
+CAsyncLoader is started with 1 IO thread and 2 worker thread
+Absolute path is used for dll: PhysicsBT.dll
+LoadLibrary (PhysicsBT.dll) failed with error 87: 参数错误。
+
+Failed loading plug-in: PhysicsBT.dll
+note: no physics engine found, null physics is used 
+Default window thread started. and a window is created in it
+Window is native: 3d window: 20628, top level: 20628
+DEBUG: main thread wnd handle : 132648
+update d3d window size: width: 1020, height:680, left:156, top:145
+Best full screen mode is (1280, 720)
+Window is native: 3d window: 20628, top level: 20628
+Absolute path is used for dll: cAudioEngine.dll
+LoadLibrary (cAudioEngine.dll) failed with error 87: 参数错误。
+
+Failed loading plug-in: cAudioEngine.dll
+error: failed loading audio plugin cAudioEngine.dll
+Audio engine init fail!
+font Tahoma;12;bold is created 
+font Tahoma;12;norm is created 
+Graphics Stats:
+HAL (pure hw vp): Intel(R) HD Graphics 530|
+VS:3 PS:3
+warning: script file bin/www.npl not found
+Default window thread exit
+NPL State main exited
+		NPL thread local memory allocator released 327680 bytes
+CAsyncLoader worker thread 0 of 6 is exited
+CAsyncLoader worker thread 1 of 6 is exited
+CAsyncLoader worker thread 2 of 6 is exited
+CAsyncLoader worker thread 3 of 6 is exited
+CAsyncLoader worker thread 4 of 6 is exited
+CAsyncLoader worker thread 5 of 6 is exited
+CAsyncLoader IO thread is exited
