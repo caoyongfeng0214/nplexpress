@@ -4,13 +4,14 @@
 	Desc: 一个Web应用框架
 
 	TODO:
-		cookie
-		session
+		cookie (done)
+		session (done)
 		params => query body (done)
 		static files (done)
 		views (done)
 		error
 		redirect
+		status 304
 		template extend
 		less sass
 ]]
