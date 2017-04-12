@@ -8,14 +8,14 @@
 
 （该插件还未更新，敬请期待。。。。。。。。。。。）
 
-* 一、确保你已经为你的 Visual Studio 安装了 NPLLuaLanguageService，如果没有，请下载并安装它：
+* 一、确保你已经为你的 Visual Studio 安装了 NPLLuaLanguageService 插件，如果没有，请下载并安装它：
 
   [https://marketplace.visualstudio.com/items?itemName=Xizhi.NPLLuaLanguageService](https://marketplace.visualstudio.com/items?itemName=Xizhi.NPLLuaLanguageService)
 
 * 二、使用 Visual Studio 创建一个 Web Application for Express：
 
-（等待截图中。。。。。。。。）
+  （等待截图中。。。。。。。。）
 
 * 三、项目创建后，Visual Studio 会自动帮我们生成一些基本的文件：
 
-（等待截图中。。。。。。。。）
+  （等待截图中。。。。。。。。）
