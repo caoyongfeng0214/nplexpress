@@ -19,3 +19,17 @@
 * 三、项目创建后，Visual Studio 会自动帮我们生成一些基本的文件：
 
   （等待截图中。。。。。。。。）
+
+* 四、点击 Visual Studio 顶部的 “运行”<img src="https://cloud.githubusercontent.com/assets/14923844/24989598/4bec0d3a-2040-11e7-83a7-6dec56de3704.png" style="vertical-align:middle;height:1.5em" valign="middle"/> 即可启动项目：
+
+  （等待截图中。。。。。。。。）
+  
+  你也可以右键点击项目名，在弹出菜单中选择 “Open Command Prompt Here...”，
+  
+  （等待截图中。。。。。。。。）
+  
+  这会打开一个命令行窗口，在该命令行窗口中输入指令 `npl bin/www.npl`并回车：
+  
+  （等待截图中。。。。。。。。）
+  
+  同样可以启动项目。但这种方式启动项目后不会自动在浏览器中打开项目首页。你可以在浏览器地址栏中输入 `http://localhost:3000` 来打开项目首页。
