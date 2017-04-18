@@ -36,18 +36,18 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="npl_mod\npl_express\config.lua" />
-    <None Include="npl_mod\npl_express\cookie.lua" />
-    <None Include="npl_mod\npl_express\express.lua" />
-    <None Include="npl_mod\npl_express\handler.lua" />
-    <None Include="npl_mod\npl_express\httpfile.lua" />
-    <None Include="npl_mod\npl_express\package.json" />
-    <None Include="npl_mod\npl_express\request.lua" />
-    <None Include="npl_mod\npl_express\response.lua" />
-    <None Include="npl_mod\npl_express\route.lua" />
-    <None Include="npl_mod\npl_express\router.lua" />
-    <None Include="npl_mod\npl_express\session.lua" />
-    <None Include="npl_mod\npl_express\sessionitem.lua" />
+    <None Include="npl_mod\express\config.lua" />
+    <None Include="npl_mod\express\cookie.lua" />
+    <None Include="npl_mod\express\express.lua" />
+    <None Include="npl_mod\express\handler.lua" />
+    <None Include="npl_mod\express\httpfile.lua" />
+    <None Include="npl_mod\express\package.json" />
+    <None Include="npl_mod\express\request.lua" />
+    <None Include="npl_mod\express\response.lua" />
+    <None Include="npl_mod\express\route.lua" />
+    <None Include="npl_mod\express\router.lua" />
+    <None Include="npl_mod\express\session.lua" />
+    <None Include="npl_mod\express\sessionitem.lua" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
