@@ -33,20 +33,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="npl_mod\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="config.lua" />
-    <None Include="cookie.lua" />
-    <None Include="express.lua" />
-    <None Include="handler.lua" />
-    <None Include="httpfile.lua" />
-    <None Include="package.json" />
-    <None Include="request.lua" />
-    <None Include="response.lua" />
-    <None Include="route.lua" />
-    <None Include="router.lua" />
+    <None Include="npl_mod\config.lua" />
+    <None Include="npl_mod\cookie.lua" />
+    <None Include="npl_mod\express.lua" />
+    <None Include="npl_mod\handler.lua" />
+    <None Include="npl_mod\httpfile.lua" />
+    <None Include="npl_mod\package.json" />
+    <None Include="npl_mod\request.lua" />
+    <None Include="npl_mod\response.lua" />
+    <None Include="npl_mod\route.lua" />
+    <None Include="npl_mod\router.lua" />
+    <None Include="npl_mod\session.lua" />
+    <None Include="npl_mod\sessionitem.lua" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -154,6 +154,12 @@ function response:render(templateUrl, data)
 end
 
 
+function response:redirect(url)
+	self:setStatus(301);
+	self:setHeader('Location', url);
+	self:send('');
+end
+
 -- return response;
 
 NPL.export(response);
