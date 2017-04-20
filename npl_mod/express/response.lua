@@ -142,12 +142,13 @@ end;
 
 function response:render(templateUrl, data)
 	local templateEngine = require(config['view engine']);
-	
-	local templateFile = ParaIO.open(config['views'] .. '/' .. templateUrl .. templateEngine.extension, 'r'); -- TODO: 改为异步
-	local template = templateFile:GetText();
-	templateFile:close();
+--	local templateFile = ParaIO.open(config['views'] .. '/' .. templateUrl .. templateEngine.config().extension, 'r'); -- TODO: 改为异步
+--	local template = templateFile:GetText();
+--	templateFile:close();
+--
+--	local content = templateEngine:render(template, data);
 
-	local content = templateEngine:render(template, data);
+	local content = templateEngine:renderFile(templateUrl, data);
 	
 	self:setContent(content);
 	self:_send();

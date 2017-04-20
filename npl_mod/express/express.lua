@@ -45,6 +45,15 @@ end
 
 function express:set(key, val)
 	config[key] = val;
+	if((key == 'views' and config['view engine'])
+		or (key == 'view engine' and config['views'])) then
+		local engine = NPL.load(config['view engine']);
+		if(engine.config) then
+			engine.config({
+				root = config['views'];
+			});
+		end
+	end
 end
 
 
