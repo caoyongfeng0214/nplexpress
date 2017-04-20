@@ -33,3 +33,49 @@
     （等待截图中。。。。。。。。）
     
     同样可以启动项目。但这种方式启动项目后不会自动在浏览器中打开项目首页。你可以在浏览器地址栏中输入 `http://localhost:3000` 来打开项目首页。
+    
+    
+> ## 模板引擎
+
+NPLExpress 推荐使用 [NPLLustache](https://github.com/caoyongfeng0214/npllustache) 。
+
+模板引擎将作为 NPLExpress 的中间件被引入。如果你希望在你的项目中使用 [NPLLustache](https://github.com/caoyongfeng0214/npllustache) ，可以这样做：
+
+    local express = NPL.load('express');
+
+    local app = express:new();
+
+    app:set('views', 'views');
+    app:set('view engine', 'lustache');
+
+代码 `app:set('view engine', 'lustache')` 设置了你的应用将使用  [NPLLustache](https://github.com/caoyongfeng0214/npllustache) 模板引擎，`app:set('views', 'views')` 设置了模板文件所在的路径，即模板文件放置在应用程序的根目录下的 views 目录。
+
+如果你希望使用其它的模板引擎，则只需将 `app:set('view engine', 'lustache')` 的第二个参数改为模板引擎的模块名（包名）即可。必须能通过 `NPL.load('YOURR_MOD_NAME')` 或 `require('YOUR_MOD_NAME')` 加载到该模块。
+
+作为 NPLExpress 的模板引擎中间件，其必须拥有 `renderFile(path, data)` 方法 和 `render(template, data)` 方法。
+
+`renderFile(path, data)` 方法的第一个参数表示需要转换成 HTML 的模板文件的路径，第二个参数为传递给模板的数据（table）。
+
+`render(template, data)` 方法的第一个参数表示需要转换成 HTML 的模板字符串，第二个参数为传递给模板的数据（table）。
+
+这两个方法都需要能返回转换后的 HTML 字符串。
+
+如果该模板引擎需要能被配置，则需提供一个 `config(cnf)` 方法。NPLExpress 会通过该方法将有关针对模板引擎的配置传递给模板引擎，比如设置的模板文件所在的路径。当 `config(cnf)` 方法接收到的参数有个 key 值为 'views' 时，即表示是在设置模板文件所在的路径。
+
+
+> ## 静态文件
+
+    local express = NPL.load('express');
+
+    local app = express:new();
+
+    app:use(express.static('public'));
+
+以上代码设置了根目录下的 'public' 文件夹是用来存放静态文件的，也可以说，针对静态文件来说 'public' 文件夹就是应用程序的根目录。
+
+还可以在这里默认文件，即当客户端请求的网址是一个目录，不是具体的某个文件，则应该访问的是哪个文件。默认值为 'index.htm'，即，当客户端访问的是网址为 'http://www.domain.com/' 时，实际访问的是 'http://www.domain.com/index.htm' 。可以这样修改此默认值：
+
+    app:use(express.static('public', { default = 'default.htm' }));
+
+这样，当客户端访问的是网址为 'http://www.domain.com/' 时，实际访问的是 'http://www.domain.com/default.htm' 。
+
