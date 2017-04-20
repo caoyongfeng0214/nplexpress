@@ -73,9 +73,9 @@ NPLExpress 推荐使用 [NPLLustache](https://github.com/caoyongfeng0214/npllust
 
 以上代码设置了根目录下的 'public' 文件夹是用来存放静态文件的，也可以说，针对静态文件来说 'public' 文件夹就是应用程序的根目录。
 
-还可以在这里默认文件，即当客户端请求的网址是一个目录，不是具体的某个文件，则应该访问的是哪个文件。默认值为 'index.htm'，即，当客户端访问的是网址为 'http://www.domain.com/' 时，实际访问的是 'http://www.domain.com/index.htm' 。可以这样修改此默认值：
+还可以在这里默认文件，即当客户端请求的网址是一个目录，不是具体的某个文件，则应该访问的是哪个文件。默认值为 'index.htm'，即，当客户端访问的是网址为 `http://www.domain.com/` 时，实际访问的是 `http://www.domain.com/index.htm` 。可以这样修改此默认值：
 
     app:use(express.static('public', { default = 'default.htm' }));
 
-这样，当客户端访问的是网址为 'http://www.domain.com/' 时，实际访问的是 'http://www.domain.com/default.htm' 。
+这样，当客户端访问的是网址为 `http://www.domain.com/` 时，实际访问的是 `http://www.domain.com/default.htm` 。
 
