@@ -95,10 +95,10 @@ NPLExpress 推荐使用 [NPLLustache](https://github.com/caoyongfeng0214/npllust
 `express.session()` 返回的也是一个中间件，你当然也可以用你自己写的 session 中间件替换它。该方法还能接受以下配置参数：
 
     app:use(express.session({
-        maxAge: 3600, -- session 经过多长时间后会被清除，单位为“秒”。默认值为 86400 。
-        domain: nooong.com, -- 设置 session 所作用的域，默认值为 nil ，即只会作用于当前域。
-        secure: true -- 是否加密传输。默认值为 false
-    }));
+        maxAge: 3600, -- session 经过多长时间后会被清除，单位为“秒”。默认值为 86400 。
+        domain: nooong.com, -- 设置 session 所作用的域，默认值为 nil ，即只会作用于当前域。
+        secure: true -- 是否加密传输。默认值为 false
+    }));
 
 你当然也可以在设置某个 session 时单独为其指定以上参数：
 
