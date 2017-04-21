@@ -112,7 +112,7 @@ NPLExpress 是“逐层匹配”。上例中的 `app:use('/news', router_news)` 
 按照这套匹配规则，为了提升匹配效率，我们应该将可能与更多请求地址匹配成功的路由配置写在后面，如：
 
     app:use('/news', router_news);
-    app:use('/', router_index); -- 这个配置应该写在最后面，因为 `/` 能与任何请求地址匹配成功。
+    app:use('/', router_index); -- 这个配置应该写在最后面，因为 `/` 能与任何请求地址匹配成功。
 
 从在 `express.Router` 的实例中配置路由的代码可以看出，配置路由时，第二个参数除了可以是一个 `express.Router` 的实例外，也可以是一个 function 。用 `app:use(....)` 来配置路由时，第二个参数也可以是一个 function ：
 
