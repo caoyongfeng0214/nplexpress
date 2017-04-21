@@ -36,7 +36,7 @@
     
     同样可以启动项目。但这种方式启动项目后不会自动在浏览器中打开项目首页。你可以在浏览器地址栏中输入 `http://localhost:3000` 来打开项目首页。
     
-*****
+-----
 
 > ## 模板引擎
 
@@ -67,6 +67,7 @@ NPLExpress 推荐使用 [NPLLustache](https://github.com/caoyongfeng0214/npllust
 
 如果该模板引擎需要能被配置，则需提供一个 `config(cnf)` 方法。NPLExpress 会通过该方法将有关针对模板引擎的配置传递给模板引擎，比如设置的模板文件所在的路径。当 `config(cnf)` 方法接收到的参数有个 key 值为 'views' 时，即表示是在设置模板文件所在的路径。
 
+-----
 
 > ## 静态文件
 
@@ -86,6 +87,7 @@ NPLExpress 推荐使用 [NPLLustache](https://github.com/caoyongfeng0214/npllust
 
 本质上，`express.static(...)` 返回的是一个 NPLExpress 的中间件，由此中间件来处理所有针对静态文件的请求。你也可以开发自己的用来处理静态文件的中间件。
 
+-----
 
 > ## session
 
