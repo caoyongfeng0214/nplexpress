@@ -254,7 +254,7 @@ session 对象包含以下属性：
 读取客户端传递过来的 cookie ：
 
     local cookie = req.cookies['COOKIE_NAME'];
-    local value = cookie.value; -- cookie 的值
+    local value = cookie.value; -- cookie 的值
     
 设置 cookie :
 
