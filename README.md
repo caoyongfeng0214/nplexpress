@@ -95,7 +95,7 @@ _./routes/news.lua_
 
 注意这里的 `router:get(...)` ，它会匹配客户端的 GET 请求。在这个案例中，当客户端访问的地址是 `/news` 时，并且是使用的是 GET 方式，则会使用 `router:get(...)` 的第二个 function 参数去处理这个请求。
 
-如果希望处理的请求地址是 `/news/hot` 时，可将跌幅的配置修改为：
+如果希望处理的请求地址是 `/news/hot` 时，可将路由配置中的 `app:use('/news', router_news)` 修改为：
 
     app:use('/news/hot', router_news);
 
@@ -105,7 +105,7 @@ _./routes/news.lua_
         res:send({msg = 'Hello NPLExpress'});
     end);
 
-NPLExpress 是“逐层匹配”。上例中的 `app:use('/news', router_news)` 就是第一层的配置。当 NPLExpress 接收到的请求地址为 `/news/hot` 时，会先在第一层配置中按配置的先后顺序逐个查找有没有相匹配的，它会发现配置的地址 `/news` 与请求地址 `/news/hot` 中的第一个节点相匹配，然后它就会执行到第二个参数。第二个参数是一个 express.Router 的实例时，在它里面也可以对路由进行配置，这就是第二忮的配置了。NPLExpress 会按先后顺序再次匹配，当找到一个配置的地址为 `/hot` 时，就与客户端发送的地址完全匹配上了，然后就会执行这个配置的第二个参数（一个function）了，这个 function 才是对请求的处理函数。
+NPLExpress 是“逐层匹配”。上例中的 `app:use('/news', router_news)` 就是第一层的配置。当 NPLExpress 接收到的请求地址为 `/news/hot` 时，会先在第一层配置中按配置的先后顺序逐个查找有没有相匹配的，它会发现配置的地址 `/news` 与请求地址 `/news/hot` 中的第一个节点相匹配，然后它就会执行到第二个参数。第二个参数是一个 express.Router 的实例时，在它里面也可以对路由进行配置，这就是第二层的配置了。NPLExpress 会按先后顺序再次匹配，当找到一个配置的地址为 `/hot` 时，就与客户端发送的地址完全匹配上了，然后就会执行这个配置的第二个参数（一个function）了，这个 function 才是对请求的处理函数。
 
 按照这套匹配规则，为了提升匹配效率，我们应该将可能与更多请求地址匹配成功的路由配置写在后面，如：
 
@@ -121,9 +121,71 @@ NPLExpress 是“逐层匹配”。上例中的 `app:use('/news', router_news)` 
 
 注意，如果你希望 NPLExpress 继续往下匹配，则需要调用 `next(....)` 方法。除非你非常明确你的代码的意图，否则不建议这样使用。
 
+如果希望通过 URL 传递参数，如：当用户访问的网址为 `/news/9527` 时，你希望网址中的 “9527” 是新闻的ID，则可这样配置路由：
+
+    app:use('/news/:id', router_news);
+
+这里的 “:” 表示这里是一个占位符，它可与任何字符串匹配，“:” 后面的 “id” 是一个名字，可在路由的处理函数中通过 request 对象按这个名字找到填充到这里的值：
+
+    local id = req.params.id;
+
 路由的处理函数会接收到三个参数，分别是 request 对象的实例、 response 对象的实例、以及一个 next 方法。
 
-request 对象是对客户端请求数据的封装，
+-----
+
+> ## Request
+
+request 对象是对客户端请求数据的封装，主要包含下属性和方法：
+
+* **Host：** _string_ ，当前请求的域名，如在本机测试，可能的值为 “localhost:3000”
+
+* **url:** _string_ ，当前请求的URL，如：“/news/hot”
+
+* **pathname:** _string_ ，不包含 query 部分的 URL，如请求的地址为 “/news?id=100”，则 pathname 的值为 “/news”
+
+* **search:** _string_ ，请求的 URL 的 query 部分，如请求的地址为 “/news?id=100”，则 search 的值为 “id=100”
+
+* **method:** _string_ ，当前请求的 method，可能的值有 'GET'、'POST'、'DELETE'、'PUT'、'UPDATE' 等
+
+* **User-Agent:** _string_ ，客户端浏览器的版本信息，以下为一个示例：'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+
+* **Accept-Language:** _string_ ，客户端浏览器所使用的语言，以下为一个示例：'zh-CN,zh;q=0.8'
+
+* **params:** _table_ ，通过 URL 传递的参数（注意：不是 query 参数）
+
+* **query:** _table_ ，query 参数
+
+* **body:** _table_ ，通过 POST 传递的参数
+
+* **session:** _express.Session_ ，可通过它对 session 进行操作
+
+* **cookies:** _table_ ，客户端传递过来的 cookie
+
+* **client:** _table_ ，客户端相关的信息。如：ip（客户端的IP地址）
+
+-----
+
+> ## Response
+
+response 用来将数据传递给客户端。主要属性和方法有：
+
+* **send(data):** _function_ ，如果参数 data 为字符串，将直接将字符串推送到客户端，如果参数 data 为 table ，则会将 table 转为 JSON 再推送到客户端。
+
+* **render(path, data)** _function_ ，渲染一个模板文件，将得到的 HTML 字符串推送到客户端。参数 path 是一个 string ，表示模板文件的路径。参数 data 是一个 table ，这个 table 会传递给模板文件。
+
+* **redirect(otherUrl)** _function_ ，跳转到另一个 URL，参数 otherURL 为一个字符串，即希望跳转到的 URL。
+
+* **appendCookie(cookie)** _function_ ，向客户端添加一个 cookie 。参数 cookie 为一个 express.Cookie 对象。
+
+* **setHeader(key, value)** _function_ ，设置发送到客户端的响应头。参数 key 与 value 均为 string 。
+
+* **setStatus(statusCode)** _function_ ，设置发送到客户端的响应状态码。参数 statusCode 为一个正整数。
+
+* **setContentType(contentType)** _function_ ，设置发送到客户端的 content-type ，参数 contentType 为一个 string，可能的值有：“text/htm”、“text/css”、“image/jpeg”、“application/x-javascript”、“application/json” 等等。
+
+* **setCharset(charset)** _function_ ，设置字符编码。参数 charset 为一个 string ，如：“utf-8”。
+
+* **setContent(content)** _function_ ，设置发送到客户端的主体内容。content 可以是一个 string ，也可以是一个 table 。
 
 -----
 
@@ -135,9 +197,9 @@ request 对象是对客户端请求数据的封装，
 
     app:use(express.static('public'));
 
-以上代码设置了根目录下的 'public' 文件夹是用来存放静态文件的，也可以说，针对静态文件来说 'public' 文件夹就是应用程序的根目录。
+以上代码设置了根目录下的 “public” 文件夹是用来存放静态文件的，也可以说，针对静态文件来说 “public” 文件夹就是应用程序的根目录。
 
-还可以在这里默认文件，即当客户端请求的网址是一个目录，不是具体的某个文件，则应该访问的是哪个文件。默认值为 'index.htm'，即，当客户端访问的是网址为 `http://www.domain.com/` 时，实际访问的是 `http://www.domain.com/index.htm` 。可以这样修改此默认值：
+还可以在这里默认文件，即当客户端请求的网址是一个目录，不是具体的某个文件，则应该访问的是哪个文件。默认值为 “index.htm”，即，当客户端访问的是网址为 `http://www.domain.com/` 时，实际访问的是 `http://www.domain.com/index.htm` 。可以这样修改此默认值：
 
     app:use(express.static('public', { default = 'default.htm' }));
 
@@ -185,7 +247,26 @@ session 对象包含以下属性：
     local maxAge = mysession.maxAge; -- 生命期。
     local domain = mysession.domain; -- 作用域。
 
+-----
 
+> ## cookie
+
+读取客户端传递过来的 cookie ：
+
+    local cookie = req.cookies['COOKIE_NAME'];
+    local value = cookie.value; -- cookie 的值
+    
+设置 cookie :
+
+    local c = express.Cookie:new({
+        name = 'myname',
+        value = 'caoyongfeng',
+        maxAge = 3600 * 24, -- 可选。该 cookie 过多长时间过会失效。单位为“秒”。默认值为 86400
+        path = '/', -- 可选。设置 cookie 的 path ，默认值为 “/”
+        domain = 'nooong.com', -- 可选。设置 cookie 的 domain ，默认值为 nil
+        secure = false -- 可选。设置 cookie 的 secure ，默认值为 false
+    });
+    res:appendCookie(c);
 
 
 
