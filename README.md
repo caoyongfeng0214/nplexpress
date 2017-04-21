@@ -163,6 +163,8 @@ request 对象是对客户端请求数据的封装，主要包含下属性和方
 
 * **client:** _table_ ，客户端相关的信息。如：ip（客户端的IP地址）
 
+* **files:** _table_ ，客户端上传的文件。
+
 -----
 
 > ## Response
@@ -255,7 +257,7 @@ session 对象包含以下属性：
 
     local cookie = req.cookies['COOKIE_NAME'];
     local value = cookie.value; -- cookie 的值
-    
+
 设置 cookie :
 
     local c = express.Cookie:new({
@@ -268,5 +270,26 @@ session 对象包含以下属性：
     });
     res:appendCookie(c);
 
+-----
+
+> ## 上传文件
+
+可通过 request 对象的 files 属性取得客户端上传的文件。
+
+    if(req.files) then -- 如果客户端没有上传文件，则 req.files 为 nil
+        local file = req.files[1]; -- req.files 是一个数组（table）
+        if(file) then
+          local re = file:saveAs();
+           -- 文件会被默认保存到 /public/uploads/ 目录下。
+           -- 如果希望保存到指定的目录，可为 saveAs() 传递一个参数，如：file:saveAs('/public/imgs')。
+           -- 也可为通过配置改变默认目录： app:set('upload_dir', '/public/imgs');
+           -- 保存的文件名是一个随机字符串，如果希望指定文件名，则可为 saveAs() 方法传递第二个参数： file:saveAs(nil, 'YOUR_FILE_NAME')
+           -- saveAs() 方法返回一个 table ,包含：
+           --     filename: 保存在服务器上的文件的名字
+           --     size: 文件大小
+           --     contentType: 上传文件时使用的 contentType
+           --     srcname: 文件原来的名字
+        end
+    end
 
 
