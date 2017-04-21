@@ -261,11 +261,11 @@ session 对象包含以下属性：
     local c = express.Cookie:new({
         name = 'myname',
         value = 'caoyongfeng',
-        maxAge = 3600 * 24, -- 可选。该 cookie 过多长时间过会失效。单位为“秒”。默认值为 86400
-        path = '/', -- 可选。设置 cookie 的 path ，默认值为 “/”
-        domain = 'nooong.com', -- 可选。设置 cookie 的 domain ，默认值为 nil
-        secure = false -- 可选。设置 cookie 的 secure ，默认值为 false
-    });
+        maxAge = 3600 * 24, -- 可选。该 cookie 过多长时间过会失效。单位为“秒”。默认值为 86400
+        path = '/', -- 可选。设置 cookie 的 path ，默认值为 “/”
+        domain = 'nooong.com', -- 可选。设置 cookie 的 domain ，默认值为 nil
+        secure = false -- 可选。设置 cookie 的 secure ，默认值为 false
+    });
     res:appendCookie(c);
 
 
