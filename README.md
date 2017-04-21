@@ -52,13 +52,15 @@ NPLExpress 推荐使用 [NPLLustache](https://github.com/caoyongfeng0214/npllust
 
 如果你希望使用其它的模板引擎，则只需将 `app:set('view engine', 'lustache')` 的第二个参数改为模板引擎的模块名（包名）即可。必须能通过 `NPL.load('YOURR_MOD_NAME')` 或 `require('YOUR_MOD_NAME')` 加载到该模块。
 
-作为 NPLExpress 的模板引擎中间件，其必须拥有 `renderFile(path, data)` 方法 和 `render(template, data)` 方法。
+作为在 NPLExpress 中使用的模板引擎，如果你期望能使用 NPLExpress 的 `render(path, data)` 方法来渲染模板并推送到客户端的话，则该模板引擎必须拥有 `renderFile(path, data)` 方法 和 `render(template, data)` 方法。
 
 `renderFile(path, data)` 方法的第一个参数表示需要转换成 HTML 的模板文件的路径，第二个参数为传递给模板的数据（table）。
 
 `render(template, data)` 方法的第一个参数表示需要转换成 HTML 的模板字符串，第二个参数为传递给模板的数据（table）。
 
 这两个方法都需要能返回转换后的 HTML 字符串。
+
+如果该模板引擎没有以上两种方法，则不能使用 NPLExpress 的 `renderFile(path, data)` 方法，但你可以使用你的模板引擎所提供的方法将模板渲染成 HTML 字符串，然后再使用 NPLExpress 的 `send(html)` 方法将其推送到客户端。
 
 如果该模板引擎需要能被配置，则需提供一个 `config(cnf)` 方法。NPLExpress 会通过该方法将有关针对模板引擎的配置传递给模板引擎，比如设置的模板文件所在的路径。当 `config(cnf)` 方法接收到的参数有个 key 值为 'views' 时，即表示是在设置模板文件所在的路径。
 
@@ -78,4 +80,49 @@ NPLExpress 推荐使用 [NPLLustache](https://github.com/caoyongfeng0214/npllust
     app:use(express.static('public', { default = 'default.htm' }));
 
 这样，当客户端访问的是网址为 `http://www.domain.com/` 时，实际访问的是 `http://www.domain.com/default.htm` 。
+
+本质上，`express.static(...)` 返回的是一个 NPLExpress 的中间件，由此中间件来处理所有针对静态文件的请求。你也可以开发自己的用来处理静态文件的中间件。
+
+
+> ## session
+
+如果希望在你的应用中使用 session，则需配置 session 中间件：
+
+    app:use(express.session());
+
+建议将此代码写在配置静态文件中间件的代码 `app:use(express.static('public'))` 后面。因为 NPLExpress 是按代码顺序执行中间件的，而针对静态文件的请求是不需要在服务器端操作 session 的。这样处理会在性能上有所优化。
+
+`express.session()` 返回的也是一个中间件，你当然也可以用你自己写的 session 中间件替换它。该方法还能接受以下配置参数：
+
+    app:use(express.session({
+        maxAge: 3600, -- session 经过多长时间后会被清除，单位为“秒”。默认值为 86400 。
+        domain: nooong.com, -- 设置 session 所作用的域，默认值为 nil ，即只会作用于当前域。
+        secure: true -- 是否加密传输。默认值为 false
+    }));
+
+你当然也可以在设置某个 session 时单独为其指定以上参数：
+
+    req.session:set({
+        name = 'myname',
+        value = 'abcdefg',
+        maxAge = 3600
+    });
+
+在设置 session 时，参数中的 name 和 value 是必须的，其它都是可选的。
+
+根据 session 名取得 session 对象：
+
+    local mysession = req.session:get('myname');
+
+session 对象包含以下属性：
+
+    local mysession = req.session:get('myname');
+    local name = mysession.name; -- session 的名字，这里当然返回的是 'myname'（如果 mysession 不为 nil 的话）
+    local value = mysession.value; -- 该 session 中存储的数据。
+    local maxAge = mysession.maxAge; -- 生命期。
+    local domain = mysession.domain; -- 作用域。
+
+
+
+
 
