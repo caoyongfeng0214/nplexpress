@@ -4,6 +4,8 @@
 
 所有对 HTTP 的处理操作均采用中间件（middleware）的形式。你也可以为 NPLExpress 开发你自己的中间件。
 
+-----
+
 > ## 创建一个基于 NPLExpress 的 Web 应用程序
 
 （该插件还未更新，敬请期待。。。。。。。。。。。）
@@ -34,7 +36,8 @@
     
     同样可以启动项目。但这种方式启动项目后不会自动在浏览器中打开项目首页。你可以在浏览器地址栏中输入 `http://localhost:3000` 来打开项目首页。
     
-    
+*****
+
 > ## 模板引擎
 
 NPLExpress 推荐使用 [NPLLustache](https://github.com/caoyongfeng0214/npllustache) 。
