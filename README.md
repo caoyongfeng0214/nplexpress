@@ -95,6 +95,8 @@ _./routes/news.lua_
 
 注意这里的 `router:get(...)` ，它会匹配客户端的 GET 请求。在这个案例中，当客户端访问的地址是 `/news` 时，并且是使用的是 GET 方式，则会使用 `router:get(...)` 的第二个 function 参数去处理这个请求。
 
+如果希望处理的是 POST 请求，则应该是 `router:post(...)` ，依此类推，还可以是 `router:delete(...)` 、 `router:put(...)` 等等。
+
 如果希望处理的请求地址是 `/news/hot` 时，可将路由配置中的 `app:use('/news', router_news)` 修改为：
 
     app:use('/news/hot', router_news);
