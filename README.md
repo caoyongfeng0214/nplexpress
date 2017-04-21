@@ -63,7 +63,7 @@ NPLExpress 推荐使用 [NPLLustache](https://github.com/caoyongfeng0214/npllust
 
 这两个方法都需要能返回转换后的 HTML 字符串。
 
-如果该模板引擎没有以上两种方法，则不能使用 NPLExpress 的 `renderFile(path, data)` 方法，但你可以使用你的模板引擎所提供的方法将模板渲染成 HTML 字符串，然后再使用 NPLExpress 的 `send(html)` 方法将其推送到客户端。
+如果该模板引擎没有以上两种方法，则不能使用 NPLExpress 的 `render(path, data)` 方法，但你可以使用你的模板引擎所提供的方法将模板渲染成 HTML 字符串，然后再使用 NPLExpress 的 `send(html)` 方法将其推送到客户端。
 
 如果该模板引擎需要能被配置，则需提供一个 `config(cnf)` 方法。NPLExpress 会通过该方法将有关针对模板引擎的配置传递给模板引擎，比如设置的模板文件所在的路径。当 `config(cnf)` 方法接收到的参数有个 key 值为 'views' 时，即表示是在设置模板文件所在的路径。
 
