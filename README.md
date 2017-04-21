@@ -40,9 +40,9 @@
 
 > ## 模板引擎
 
-NPLExpress 推荐使用 [NPLLustache](https://github.com/caoyongfeng0214/npllustache) 。
+NPLExpress 推荐使用 [NPLLustache](https://github.com/caoyongfeng0214/npllustache) 模板引擎。
 
-模板引擎将作为 NPLExpress 的中间件被引入。如果你希望在你的项目中使用 [NPLLustache](https://github.com/caoyongfeng0214/npllustache) ，可以这样做：
+如果你希望在你的项目中使用 [NPLLustache](https://github.com/caoyongfeng0214/npllustache) ，可以这样做：
 
     local express = NPL.load('express');
 
