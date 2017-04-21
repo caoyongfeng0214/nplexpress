@@ -116,11 +116,11 @@ NPLExpress 推荐使用 [NPLLustache](https://github.com/caoyongfeng0214/npllust
 
 session 对象包含以下属性：
 
-    local mysession = req.session:get('myname');
-    local name = mysession.name; -- session 的名字，这里当然返回的是 'myname'（如果 mysession 不为 nil 的话）
-    local value = mysession.value; -- 该 session 中存储的数据。
-    local maxAge = mysession.maxAge; -- 生命期。
-    local domain = mysession.domain; -- 作用域。
+    local mysession = req.session:get('myname');
+    local name = mysession.name; -- session 的名字，这里当然返回的是 'myname'（如果 mysession 不为 nil 的话）
+    local value = mysession.value; -- 该 session 中存储的数据。
+    local maxAge = mysession.maxAge; -- 生命期。
+    local domain = mysession.domain; -- 作用域。
 
 
 
