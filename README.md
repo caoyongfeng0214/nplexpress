@@ -69,6 +69,64 @@ NPLExpress 推荐使用 [NPLLustache](https://github.com/caoyongfeng0214/npllust
 
 -----
 
+> ## 路由
+
+NPLExpress 的路由匹配不支持复杂的正则匹配。对于未来是否加入复杂的正则匹配，正在考虑中。目前这种简单的匹配方式已经能够满足绝大部分应用的需求。
+
+    local express = NPL.load('express');
+    local router_news = NPL.load('./routes/news');
+    
+    local app = express:new();
+    
+    app:use('/news', router_news);
+
+注意上面代码中的 `app:use('/news', router_news)` ，表示当接收到了客户端的请求地址是 `/news` 时，则用 `router_news` 来处理。严格来说，是当客户端的请求地址是以 `/news` 开头时，则使用 `router_news` 来处理。`router_news` 是一个 `express.Router` 的实例，在这个案例中，我们的实现如下：
+
+**./routes/news.lua**
+
+    local express = NPL.load('express');
+    local router = express.Router:new();
+
+    router:get('/', function(req, res, next)
+        res:send({msg = 'Hello NPLExpress'});
+    end);
+
+    NPL.export(router);
+
+注意这里的 `router:get(...)` ，它会匹配客户端的 GET 请求。在这个案例中，当客户端访问的地址是 `/news` 时，并且是使用的是 GET 方式，则会使用 `router:get(...)` 的第二个 function 参数去处理这个请求。
+
+如果希望处理的请求地址是 `/news/hot` 时，可将跌幅的配置修改为：
+
+    app:use('/news/hot', router_news);
+
+也可将 `./routes/news.lua` 中的 `router:get('/', ...)` 修改为：
+
+    router:get('/hot', function(req, res, next)
+        res:send({msg = 'Hello NPLExpress'});
+    end);
+
+NPLExpress 是“逐层匹配”。上例中的 `app:use('/news', router_news)` 就是第一层的配置。当 NPLExpress 接收到的请求地址为 `/news/hot` 时，会先在第一层配置中按配置的先后顺序逐个查找有没有相匹配的，它会发现配置的地址 `/news` 与请求地址 `/news/hot` 中的第一个节点相匹配，然后它就会执行到第二个参数。第二个参数是一个 express.Router 的实例时，在它里面也可以对路由进行配置，这就是第二忮的配置了。NPLExpress 会按先后顺序再次匹配，当找到一个配置的地址为 `/hot` 时，就与客户端发送的地址完全匹配上了，然后就会执行这个配置的第二个参数（一个function）了，这个 function 才是对请求的处理函数。
+
+按照这套匹配规则，为了提升匹配效率，我们应该将可能与更多请求地址匹配成功的路由配置写在后面，如：
+
+    app:use('/news', router_news);
+    app:use('/', router_index); -- 这个配置应该写在最后面，因为 `/` 能与任何请求地址匹配成功。
+
+从在 `express.Router` 的实例中配置路由的代码可以看出，配置路由时，第二个参数除了可以是一个 `express.Router` 的实例外，也可以是一个 function 。用 `app:use(....)` 来配置路由时，第二个参数也可以是一个 function ：
+
+    app:use('/news', function(req, res, next)
+        -- do something
+        next(req, res, next);
+    end);
+
+注意，如果你希望 NPLExpress 继续往下匹配，则需要调用 `next(....)` 方法。除非你非常明确你的代码的意图，否则不建议这样使用。
+
+路由的处理函数会接收到三个参数，分别是 request 对象的实例、 response 对象的实例、以及一个 next 方法。
+
+request 对象是对客户端请求数据的封装，
+
+-----
+
 > ## 静态文件
 
     local express = NPL.load('express');
@@ -101,7 +159,7 @@ NPLExpress 推荐使用 [NPLLustache](https://github.com/caoyongfeng0214/npllust
 
     app:use(express.session({
         maxAge: 3600, -- session 经过多长时间后会被清除，单位为“秒”。默认值为 86400 。
-        domain: nooong.com, -- 设置 session 所作用的域，默认值为 nil ，即只会作用于当前域。
+        domain: 'nooong.com', -- 设置 session 所作用的域，默认值为 nil ，即只会作用于当前域。
         secure: true -- 是否加密传输。默认值为 false
     }));
 
@@ -109,7 +167,7 @@ NPLExpress 推荐使用 [NPLLustache](https://github.com/caoyongfeng0214/npllust
 
     req.session:set({
         name = 'myname',
-        value = 'abcdefg',
+        value = 'caoyongfeng',
         maxAge = 3600
     });
 
