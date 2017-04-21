@@ -82,7 +82,7 @@ NPLExpress 的路由匹配不支持复杂的正则匹配。对于未来是否加
 
 注意上面代码中的 `app:use('/news', router_news)` ，表示当接收到了客户端的请求地址是 `/news` 时，则用 `router_news` 来处理。严格来说，是当客户端的请求地址是以 `/news` 开头时，则使用 `router_news` 来处理。`router_news` 是一个 `express.Router` 的实例，在这个案例中，我们的实现如下：
 
-**./routes/news.lua**
+_./routes/news.lua_
 
     local express = NPL.load('express');
     local router = express.Router:new();
