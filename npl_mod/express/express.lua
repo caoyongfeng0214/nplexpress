@@ -50,7 +50,7 @@ function express:set(key, val)
 		local engine = NPL.load(config['view engine']);
 		if(engine.config) then
 			engine.config({
-				root = config['views'];
+				views = config['views'];
 			});
 		end
 	end
