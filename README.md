@@ -264,7 +264,7 @@ session 对象包含以下属性：
         maxAge = 3600
     });
 
-这样，新的值会覆盖旧的值。
+这样，新的 session 将会覆盖旧的 session 。
 
 如果希望将指定的 session 移除，可以这样写：
 
