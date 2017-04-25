@@ -17,7 +17,7 @@
 		less sass
 ]]
 
-NPL.load('string');
+NPL.load('common');
 local mime = NPL.load('mime');
 local router = NPL.load('./router.lua');
 local config = NPL.load('./config.lua');
