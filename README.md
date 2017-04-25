@@ -272,6 +272,16 @@ session 对象包含以下属性：
     });
     res:appendCookie(c);
 
+如果希望修改 cookie 的值，则需重新设置一个同名的 cookie 。
+
+如果希望删除一个 cookie ，则设置一个同名的 cookie ，并将 maxAge 设为负数：
+
+    local c = express.Cookie:new({
+        name = 'myname',
+        maxAge = -1
+    });
+    res:appendCookie(c);
+
 -----
 
 > ## 上传文件
