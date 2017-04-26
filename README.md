@@ -251,6 +251,25 @@ session 对象包含以下属性：
     local maxAge = mysession.maxAge; -- 生命期。
     local domain = mysession.domain; -- 作用域。
 
+如果希望修改 session 的值，可以这样做：
+
+    local mysession = req.session:get('myname');
+    mysession.value = 'cyf';
+
+但需要注意的是：这样并不会重置 session 的有效期。如果希望修改 session 的值后其有效期也能被重置，则可以直接设置一个同名的 session ：
+
+    req.session:set({
+        name = 'myname',
+        value = 'cyf',
+        maxAge = 3600
+    });
+
+这样，新的 session 将会覆盖旧的 session 。
+
+如果希望将指定的 session 移除，可以这样写：
+
+    req.session:remove('mynmae');
+
 -----
 
 > ## cookie
