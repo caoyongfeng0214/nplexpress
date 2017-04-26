@@ -41,12 +41,12 @@ end;
 function session:set(obj)
 	if(obj.name) then
 		local cookieKey = '___npl_express_sid_' .. obj.name:encodeURI();
-		local cookie = self.req.cookies[cookieKey];
+		local ck = self.req.cookies[cookieKey];
 		local sessionKey = nil;
 		local session_item = nil;
 		
-		if(cookie) then
-			sessionKey = cookie.value;
+		if(ck) then
+			sessionKey = ck.value;
 			session_item = session.data[sessionKey];
 		else
 			local dt = os.time();
