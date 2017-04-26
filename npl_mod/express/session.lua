@@ -47,7 +47,9 @@ function session:set(obj)
 		
 		if(ck) then
 			sessionKey = ck.value;
-			session_item = session.data[sessionKey];
+			if(session.data) then
+				session_item = session.data[sessionKey];
+			end
 		else
 			local dt = os.time();
 			if(dt ~= session.__dt) then
