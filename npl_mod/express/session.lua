@@ -72,7 +72,7 @@ function session:set(obj)
 		local cookie_item = cookie:new({
 			name = cookieKey,
 			value = sessionKey,
-			maxAge = sessionitem.maxAge,
+			maxAge = session_item.maxAge,
 			path = session_item.path,
 			domain = session_item.domain
 		});
@@ -83,7 +83,7 @@ function session:set(obj)
 		session.data[sessionKey] = session_item;
 		session_item.__timer__ = setTimeout(function()
 			session.data[sessionKey] = nil;
-		end, cookie_item.maxAge * 60);
+		end, cookie_item.maxAge * 1000);
 	end
 	return session;
 end;
