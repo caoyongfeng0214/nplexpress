@@ -1,4 +1,4 @@
-﻿
+﻿NPL.load("(gl)script/ide/Json.lua");
 local httpfile = NPL.load('./httpfile.lua');
 local cookie = NPL.load('./cookie.lua');
 
@@ -111,13 +111,26 @@ function request:new(o)
 						end
 						_, keyStart = string.find(body, 'name="', start);
 					end
+				elseif(contentType and (contentType:startsWith('application/json'))) then
+					local _body = commonlib.Json.Decode(body);
+					for k, v in pairs(_body) do
+						o.body[k] = v;
+					end
 				else
+					-- print(body);
 					local items = body:split('&');
 					local i = 1;
 					for i = 1, #items do
 						local item = items[i];
 						local ary = item:split('=');
-						o.body[ary[1]] = ary[2]:decodeURI();
+						local key = ary[1];
+						local val = ary[2];
+						if(val) then
+							val = val:decodeURI();
+						else
+							val = '';
+						end
+						o.body[key] = val;
 					end
 				end
 			end
