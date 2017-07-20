@@ -82,17 +82,25 @@ function express.static(staticDirectory, conf)
 		end
 		if(req.method == 'GET' and ParaIO.DoesFileExist(path)) then
 			local extention = path:match('^.+%.([a-zA-Z0-1]+)$');
-			local mimeType = mime.get(extention);
-			res:setContentType(mimeType);
-			local f = ParaIO.open(path, 'r');
-			if(mime.isPlainTextType(mimeType)) then
-				local text = f:GetText();
-				f:close();
-				res:send(text);
+			if(extention) then -- 目前用有无文件扩展名来判断是否是文件夹，这种方法是不保险的，应该改进
+				local mimeType = mime.get(extention);
+				res:setContentType(mimeType);
+				local f = ParaIO.open(path, 'r');
+
+				-- TODO: 判断是文件还是文件夹
+				-- local ifs = require "lfs";
+
+				if(mime.isPlainTextType(mimeType)) then
+					local text = f:GetText();
+					f:close();
+					res:send(text);
+				else
+					local s = f:ReadString(f:GetFileSize());
+					f:close();
+					res:send(s);
+				end
 			else
-				local s = f:ReadString(f:GetFileSize());
-				f:close();
-				res:send(s);
+				next(req, res, next);
 			end
 		else
 			next(req, res, next);
