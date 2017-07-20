@@ -81,7 +81,7 @@ function express.static(staticDirectory, conf)
 			path = path .. config['default'];
 		end
 		if(req.method == 'GET' and ParaIO.DoesFileExist(path)) then
-			local extention = path:match('^.+%.([a-zA-Z0-1]+)$');
+			local extention = path:match('^.+%.([a-zA-Z0-9]+)$');
 			if(extention) then -- 目前用有无文件扩展名来判断是否是文件夹，这种方法是不保险的，应该改进
 				local mimeType = mime.get(extention);
 				res:setContentType(mimeType);
