@@ -91,7 +91,7 @@ end;
 
 
 function session:remove(name)
-	local cookieKey = '___npl_express_sid_' .. obj.name:encodeURI();
+	local cookieKey = '___npl_express_sid_' .. name:encodeURI();
 	local cookie = self.req.cookies[cookieKey];
 	local sessionKey = nil;
 	local session_item = nil;
