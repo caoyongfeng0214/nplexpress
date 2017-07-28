@@ -81,9 +81,28 @@ function session:set(obj)
 			session.data = {};
 		end
 		session.data[sessionKey] = session_item;
-		session_item.__timer__ = setTimeout(function()
-			session.data[sessionKey] = nil;
-		end, cookie_item.maxAge * 1000);
+		local MAXT = 3600;
+		local timerFun = function(seconds)
+			local sub = seconds - MAXT;
+			local s = seconds;
+			if(sub > 0) then
+				s = MAXT;
+			end
+			session_item.__timer__ = setTimeout(function()
+				if(sub > 0) then
+					timerFun(sub);
+				else
+					session.data[sessionKey] = nil;
+				end
+			end, s * 1000);
+		end;
+		timerFun(cookie_item.maxAge);
+
+		--session_item.__timer__ = setTimeout(function()
+		--	print('session TIMEOUT..........................');
+		--	print(cookie_item.maxAge);
+		--	session.data[sessionKey] = nil;
+		--end, cookie_item.maxAge * 1000);
 	end
 	return session;
 end;
