@@ -23,6 +23,7 @@ local router = NPL.load('./router.lua');
 local config = NPL.load('./config.lua');
 local cookie = NPL.load('./cookie.lua');
 local session = NPL.load('./session.lua');
+local handler = NPL.load('./handler.lua');
 
 
 local express = {};
@@ -37,6 +38,9 @@ end
 express.Router = router;
 express.Cookie = cookie;
 express.session = session.handler;
+express.config = config;
+--express.handler = handler;
+
 
 function express:address()
 	return { ip = config.ip, port = config.port };
@@ -110,14 +114,24 @@ end
 
 
 function express:listen(port)
-	if(port) then
-		self:set('port', '' .. port);
+	if(__rts__:GetName() == 'main') then
+		if(port) then
+			self:set('port', '' .. port);
+		end
+
+		handler.initChildThreads();
+
+		local _from_path = debug.getinfo(2,'S').source;
+		for k, v in pairs(handler.threads) do
+			NPL.activate(string.format("(%s)" .. _from_path, v.name), {
+				___initChildThread = true
+			});
+		end
+		
+		--NPL.AddPublicFile(debug.getinfo(1,'S').source:match('^@%.[/\\](.+[/\\])[^/\\]+$') .. 'handler.lua', -10);
+		NPL.AddPublicFile(debug.getinfo(1,'S').source:match('^[@%./\\]*(.+[/\\])[^/\\]+$') .. 'handler.lua', -10);
+		NPL.StartNetServer(self:get('ip'), self:get('port'));
 	end
-	
-	-- TODO: 如何将参数传递给另一个线程？目前，即使有多个 express 的实例，也都是使用同一个配置
-	--NPL.AddPublicFile(debug.getinfo(1,'S').source:match('^@%.[/\\](.+[/\\])[^/\\]+$') .. 'handler.lua', -10);
-	NPL.AddPublicFile(debug.getinfo(1,'S').source:match('^[@%./\\]*(.+[/\\])[^/\\]+$') .. 'handler.lua', -10);
-    NPL.StartNetServer(self:get('ip'), self:get('port'));
 end
 
 

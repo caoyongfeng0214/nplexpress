@@ -1,5 +1,6 @@
 ﻿local sessionitem = NPL.load('./sessionitem.lua');
 local cookie = NPL.load('./cookie.lua');
+local handler = NPL.load('./handler.lua');
 
 local session = {};
 
@@ -77,10 +78,18 @@ function session:set(obj)
 			domain = session_item.domain
 		});
 		self.res:appendCookie(cookie_item);
-		if(not session.data) then
-			session.data = {};
-		end
-		session.data[sessionKey] = session_item;
+		--if(not session.data) then
+		--	session.data = {};
+		--end
+		--session.data[sessionKey] = session_item;
+		session._set({
+			key = sessionKey,
+			val = session_item
+		});
+		handler.shareData('_set', {
+			key = sessionKey,
+			val = session_item
+		});
 		local MAXT = 3600;
 		local timerFun = function(seconds)
 			local sub = seconds - MAXT;
@@ -93,6 +102,9 @@ function session:set(obj)
 					timerFun(sub);
 				else
 					session.data[sessionKey] = nil;
+					handler.shareData('_set', {
+						key = sessionKey
+					});
 				end
 			end, s * 1000);
 		end;
@@ -117,19 +129,22 @@ function session:remove(name)
 		
 	if(cookie) then
 		sessionKey = cookie.value;
-		session_item = session.data[sessionKey];
 		local c = cookie:new({
 			name = cookieKey,
 			maxAge = -1
 		});
 		self.res:appendCookie(c);
 
-		if(session_item) then
-			if(session_item.__timer__) then
-				clearTimeout(session_item.__timer__);
-			end
-			if(session.data) then
+		if(session.data) then
+			session_item = session.data[sessionKey];
+			if(session_item) then
+				if(session_item.__timer__) then
+					clearTimeout(session_item.__timer__);
+				end
 				session.data[sessionKey] = nil;
+				handler.shareData('_set', {
+					key = sessionKey
+				});
 			end
 		end
 	end
@@ -145,6 +160,18 @@ session.handler = function(cnf)
 		next(req, res, next);
 	end;
 end;
+
+
+
+session._set = function(obj)
+	if(obj.key) then
+		if(not session.data) then
+			session.data = {};
+		end
+		session.data[obj.key] = obj.val;
+	end
+end;
+
 
 
 NPL.export(session);

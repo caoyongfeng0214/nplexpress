@@ -117,7 +117,12 @@ function response:_send()
     out[#out+1] = "\r\n";
     out[#out+1] = self.data;
 
-    return NPL.activate(format("%s:http", self.request.nid), table.concat(out));
+    NPL.activate(format("%s:http", self.request.nid), table.concat(out));
+	
+	NPL.activate(string.format("(%s)" .. debug.getinfo(1,'S').source:match('^[@%./\\]*(.+[/\\])[^/\\]+$') .. 'handler.lua', 'main'), {
+		___threadend = true,
+		___threadname = self.request.___threadname
+	});
 end
 
 
@@ -149,6 +154,9 @@ function response:render(templateUrl, data)
 --	local content = templateEngine:render(template, data);
 
 	local content = templateEngine:renderFile(templateUrl, data);
+
+	--print('response response response response ');
+	--print(#content);
 	
 	self:setContent(content);
 	self:_send();
@@ -156,7 +164,7 @@ end
 
 
 function response:redirect(url)
-	self:setStatus(301);
+	self:setStatus(302);
 	self:setHeader('Location', url);
 	self:send('');
 end

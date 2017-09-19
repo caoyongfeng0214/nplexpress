@@ -5,6 +5,7 @@ local config = {
 	['view engine'] = 'lustache',
 	default = 'index.htm',
 	cookieAge = 86400,
+	threadCnt = 100,
 	upload_dir = '/public/uploads/'
 };
 
