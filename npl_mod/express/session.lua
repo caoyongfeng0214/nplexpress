@@ -91,7 +91,7 @@ function session:set(obj)
 			val = session_item
 		});
 		local MAXT = 3600;
-		local timerFun = function(seconds)
+		local function timerFun(seconds)
 			local sub = seconds - MAXT;
 			local s = seconds;
 			if(sub > 0) then
