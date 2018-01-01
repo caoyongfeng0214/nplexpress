@@ -75,6 +75,14 @@ handler.shareData = function(action, data)
 end
 
 
+handler.recvConnection = function(msg)
+    local thread = handler.selectThread();
+	msg.___threadname = thread.name;
+	msg.___isreq = true;
+	NPL.activate(string.format("(%s)" .. debug.getinfo(1,'S').source:match('^[@%./\\]*(.+[/\\])[^/\\]+$') .. 'handler.lua', thread.name), msg);
+end
+
+
 local function activate()
 	if(msg.___threadend) then
 		local thread = handler.threads[msg.___threadname];
@@ -94,19 +102,30 @@ local function activate()
 				if(_f and type(_f) == 'function') then
 					_f(msg.___data);
 				end
+                if(__rts__:GetName() == 'main') then
+                    local thread = handler.threads[msg.___threadname];
+		            if(thread) then
+			            thread.queue = thread.queue - 1;
+			            if(thread.queue < 0) then
+				            thread.queue = 0;
+			            end
+		            end
+                end
 			elseif(msg.___share and msg.___threadcnt) then
 				msg.___set = true;
 				local _i = 1;
+                local _path = "(%s)" .. debug.getinfo(1,'S').source:match('^[@%./\\]*(.+[/\\])[^/\\]+$') .. 'handler.lua';
 				for _i=1, msg.___threadcnt do
 					local _threadname = 'worker_' .. _i;
 					if(_threadname ~= msg.___fromthread) then
-						NPL.activate(string.format("(%s)" .. debug.getinfo(1,'S').source:match('^[@%./\\]*(.+[/\\])[^/\\]+$') .. 'handler.lua', _threadname), msg);
+						NPL.activate(string.format(_path, _threadname), msg);
 					end
 				end
-				NPL.activate(string.format("(%s)" .. debug.getinfo(1,'S').source:match('^[@%./\\]*(.+[/\\])[^/\\]+$') .. 'handler.lua', 'main'), {
-					___threadend = true,
-					___threadname = msg.___threadname
-				});
+                NPL.activate(string.format(_path, 'main'), msg);
+				--NPL.activate(string.format("(%s)" .. debug.getinfo(1,'S').source:match('^[@%./\\]*(.+[/\\])[^/\\]+$') .. 'handler.lua', 'main'), {
+				--	___threadend = true,
+				--	___threadname = msg.___threadname
+				--});
 			end
 		end
 	elseif(msg.___isshare) then
@@ -116,10 +135,7 @@ local function activate()
 		msg.___threadname = _thread.name;
 		NPL.activate(string.format("(%s)" .. debug.getinfo(1,'S').source:match('^[@%./\\]*(.+[/\\])[^/\\]+$') .. 'handler.lua', _thread.name), msg);
 	else
-		local thread = handler.selectThread();
-		msg.___threadname = thread.name;
-		msg.___isreq = true;
-		NPL.activate(string.format("(%s)" .. debug.getinfo(1,'S').source:match('^[@%./\\]*(.+[/\\])[^/\\]+$') .. 'handler.lua', thread.name), msg);
+		handler.recvConnection(msg);
 	end
 end
 
