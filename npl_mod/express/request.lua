@@ -106,7 +106,12 @@ function request:new(o)
 							local valStart = keyEnd + 3;
 							local valEnd, _ = string.find(body, boundaryKey, valStart + 1);
 							local val = string.sub(body, valStart, valEnd - 2);
-							o.body[key] = val:replace('\n', '\r\n');
+							if(val:startsWith('\r\n') and val:endsWith('\r')) then -- 解决当参数中有传文件时，其它文本参数前后取值范围不正确的bug
+                                val = string.sub(val, 3, -2);
+                            end
+                            -- print('=====start====', val:startsWith('\r'), val:startsWith('\n'), val:startsWith('\r\n'), val:endsWith('\r'), val:endsWith('\n'), val:endsWith('\r\n'));
+							-- o.body[key] = val:replace('\n', '\r\n');
+                            o.body[key] = val;
 							start = valEnd + 1;
 						end
 						_, keyStart = string.find(body, 'name="', start);
